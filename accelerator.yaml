@@ -1,0 +1,34 @@
+accelerator:
+  description: Showcases the use of custom types and their use with the Loop transform, repeatidely applying the OpenRewriteRecipe to a pom file.
+  types:
+    - name: MavenPlugin
+      struct:
+        - name: groupId
+        - name: artifactId
+        - name: version
+          validationRegex: "\\d+\\.\\d+\\.\\d+(-SNAPSHOT)?"
+
+
+  options:
+    - name: plugins
+      dataType: [MavenPlugin]
+      label: Choose plugins to add to pom file
+
+
+engine:
+  type: Loop
+  on: "#plugins"
+  var: p
+  doAsChain:
+    type: OpenRewriteRecipe
+    recipe: org.openrewrite.maven.AddPlugin
+    options:
+      groupId: "#p['groupId']"
+      artifactId: "#p['artifactId']"
+      version: "#p['version']"
+
+
+
+
+
+
