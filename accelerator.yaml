@@ -1,0 +1,22 @@
+accelerator:
+  description: Showcases the use of the Loop transform by creating multiple copies of a template folder and "merging" them together.
+  options: 
+    - name: modules
+      dataType: [string]
+      label: Names of sub-modules to create
+
+
+engine:
+  applyTo: ["template/**"]
+  chain:
+    - type: Loop # Create N copies of the module
+      on: "#modules"
+      var: m
+      doAsMerge:
+        type: RewritePath
+        regex: "template/(.*)"
+        rewriteTo: "#m + '/' + #g1"
+
+
+
+
